@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import lombok.extern.log4j.Log4j;
 
@@ -66,4 +67,18 @@ public class SampleController {
 		log.info("page : "+page);
 		return "/sample/ex04";
 	}
+	@GetMapping("/ex05")
+	public void ex05() {//보이드 타입 
+		log.info("ex05..............");	
+	}
+	@GetMapping("/ex06")
+	public @ResponseBody SampleDTO ex06() { //return 타입이 @ResponseBody 제이슨으로 만들어보냄 
+		
+		log.info("ex06..............");
+		SampleDTO dto =new SampleDTO();
+		dto.setAge(10);
+		dto.setName("conan");
+		return dto;
+	}
+	
 }
