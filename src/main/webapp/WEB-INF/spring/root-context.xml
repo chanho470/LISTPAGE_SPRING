@@ -26,6 +26,7 @@
 			<property name ="dataSource" ref="dataSource"></property>	
 		</bean>
 		
-		<mybatis-spring:scan base-package="org.conan.*"/>
-		<!-- <context:component-scan base-package="org.conan.service"/> -->
+		<context:component-scan base-package="org.conan.service"/>
+		<mybatis-spring:scan base-package="org.conan.persistence"/>
+		
 </beans>
