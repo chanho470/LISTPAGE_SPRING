@@ -6,4 +6,26 @@
    <select id="getList" resultType="org.conan.domain.BoardVO">
       select * from tbl_board where bno>0
    </select>
+   
+   <insert id ="insert">
+   		insert into tbl_board(title , content ,writer)
+   		value(#{title} ,#{content} ,#{writer})
+   </insert>
+   
+   <select id ="read" resultType="org.conan.domain.BoardVO">
+   		select * from tbl_board where bno = #{bno}
+   </select>
+   
+   <delete id="delete">
+   		delete from tbl_board where bno = #{bno}
+   </delete>
+   
+   <update id="update">
+   		update tbl_board
+   		set title = #{title},
+   		content = #{content},
+   		writer =#{writer},
+   		updateDate = now()
+   		where bno =#{bno}
+   </update>
 </mapper>
