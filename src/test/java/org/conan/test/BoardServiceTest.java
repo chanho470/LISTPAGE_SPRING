@@ -33,8 +33,8 @@ public class BoardServiceTest {
 	@Test
 	public void testRegister() {
 		BoardVO board = new BoardVO();
-		board.setTitle("새글");
-		board.setContent("새 내용");
+		board.setTitle("새글 from service");
+		board.setContent("새 내용 from service");
 		board.setWriter("newbie");
 		service.register(board);
 		log.info("생성된 게시물 번호 : "+board.getBno());

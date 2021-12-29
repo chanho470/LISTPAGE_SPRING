@@ -30,15 +30,16 @@ public class BoardController {
 	public String register(BoardVO board , RedirectAttributes rttr) {
 		log.info("register 등록 : "+board);
 		service.register(board);
+		rttr.addFlashAttribute("result",board.getBno());
+		return "redirect:/board/list"; //하지 않는경우 새로 고침시 도배 
 		
-		return "redirect:/board/list";
 	}
 	@GetMapping("/register")
 	public void register() {
 		
 	}
 	
-	@GetMapping("/get")
+	@GetMapping({"/get","/modify"})
 	public void get(@RequestParam("bno") Long bno , Model model) {
 		log.info("/get");
 		model.addAttribute("board",service.get(bno));
@@ -52,6 +53,8 @@ public class BoardController {
 		}
 		return "redirect:/board/list";
 	}
+	
+	
 	@PostMapping("/remove")
 	public String remove(@RequestParam("bno") Long bno,RedirectAttributes rttr) {
 		log.info("remove................." + bno);
