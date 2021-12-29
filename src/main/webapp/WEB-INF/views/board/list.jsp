@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
 <script src="http://code.jquery.com/jquery-latest.js"></script> <!-- 푸터에 있음 -->
 <html lang="en">
@@ -41,8 +42,8 @@
                                         <td>${list.bno}</td>
                                         <td><a href="/board/get?bno=${list.bno}">${list.title}</a></td>
                                         <td>${list.writer}</td>
-                                        <td class="center">${list.regDate}</td>
-                                        <td class="center">${list.updateDate}</td>
+                                        <td class="center"><fmt:formatDate value="${list.regDate}" pattern="yyyy/MM/dd"/></td>
+                                        <td class="center"><fmt:formatDate value="${list.updateDate}" pattern="yyyy/MM/dd"/></td>
                                     </tr>
                              </c:forEach>
                                  </tbody>
