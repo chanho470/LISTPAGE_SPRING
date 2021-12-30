@@ -1,5 +1,7 @@
 package org.conan.test;
 
+import java.util.List;
+
 import org.conan.domain.BoardVO;
 import org.junit.Before;
 import org.junit.Test;
@@ -65,5 +67,12 @@ public class BoardControllerTest {
 		String resultPage = mockMvc.perform(MockMvcRequestBuilders.post("/board/remove")
 				.param("bno","6")).andReturn().getModelAndView().getViewName();
 		log.info(resultPage);
+	}
+	@Test
+	public void testListPageing() throws Exception{
+		log.info(mockMvc.perform(MockMvcRequestBuilders.get("/board/list")
+				.param("pageNum","2")
+				.param("amount","3"))
+				.andReturn().getModelAndView().getModelMap());
 	}
 }

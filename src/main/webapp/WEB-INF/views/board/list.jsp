@@ -25,7 +25,7 @@
                         
                         <!-- /.panel-heading -->
                         <div class="panel-body">
-                            <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+                            <table width="100%" class="table table-striped table-bordered table-hover"> <!-- id="dataTables-example" -->
                                 <thead>
                                     <tr>
                                         <th>#번호</th>
@@ -40,7 +40,7 @@
 							<c:forEach var="list" items="${list}"> <!--  반복문 사용 -->
                                     <tr class="odd gradeX">
                                         <td>${list.bno}</td>
-                                        <td><a href="/board/get?bno=${list.bno}">${list.title}</a></td>
+                                        <td><a class="move" href='<c:out value="${list.bno}"/>'>${list.title}</a></td>
                                         <td>${list.writer}</td>
                                         <td class="center"><fmt:formatDate value="${list.regDate}" pattern="yyyy/MM/dd"/></td>
                                         <td class="center"><fmt:formatDate value="${list.updateDate}" pattern="yyyy/MM/dd"/></td>
@@ -48,6 +48,31 @@
                              </c:forEach>
                                  </tbody>
                                 </table>
+                                
+                                
+								<div class='pull-right'>
+									<ul class="pagination">
+										<c:if test="${pageMaker.prev}">
+											<li class="paginate_button previous"><a
+												href="${pageMaker.startPage-1}">Previous</a></li>
+										</c:if>
+										<c:forEach var="num" begin="${pageMaker.startPage }"
+											end="${pageMaker.endPage }">
+											<li class="paginate_button ${pageMaker.cri.pageNum==num?"active":""}"><a
+												href="${num }">${num }</a></li>
+										</c:forEach>
+										<c:if test="${pageMaker.next }">
+											<li class="paginate_button next"><a
+												href="${pageMaker.endPage+1 }">Next</a>
+												</li>
+										</c:if>
+									</ul>
+								</div>
+									<form id="actionForm" action="/board/list" method ="get">
+                                		<input type='hidden' name='pageNum' value='${pageMaker.cri.pageNum }'>
+                                		<input type='hidden' name='amount' value='${pageMaker.cri.amount }'>
+                                	</form>
+                                
                                 
                                 <div class="modal fade" id ="myModal" tabindex="-1" role="dialog" 
                                 aria-labelledby = "myModallabel" aria-hidden="true">
@@ -96,10 +121,28 @@
    				}
    				$("#myModal").modal("show");
    			}
+   			
    		} );
    		$("#regBtn").on("click",function(){
    			self.location = "/board/register";
    		});
+   		
+   			var actionForm = $("#actionForm");
+   	   		$(".paginate_button a").on("click",function(e){
+   	   			e.preventDefault();
+   	   			console.log("click");
+   	   			actionForm.find("input[name='pageNum']").val($(this).attr("href"));
+   	   			actionForm.submit();
+   	   		});
+   	   		
+   	   		$(".move").on("click",function(e){
+   	   			e.preventDefault();
+   	   			console.log("click");
+   	   			actionForm.append("<input type='hidden' name='bno' value='" + $(this).attr("href")+ "'>");
+   	   			actionForm.attr("action","/board/get");
+   	   			actionForm.submit();
+   	   		});
+   		
    </script>
 </body>
    <%@include file="../includes/footer.jsp" %>

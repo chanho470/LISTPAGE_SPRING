@@ -3,6 +3,7 @@ package org.conan.service;
 import java.util.List;
 
 import org.conan.domain.BoardVO;
+import org.conan.domain.Criteria;
 import org.conan.persistence.BoardMapper;
 import org.springframework.stereotype.Service;
 
@@ -46,6 +47,12 @@ public class BoardServiceImpl implements BoardService {
 	public List<BoardVO> getList() {
 		log.info("getList....................");
 		return mapper.getList();
+	}
+
+	@Override
+	public List<BoardVO> getList(Criteria cri) {
+		log.info("getList with criteria"+cri);
+		return mapper.getListWithPaging(cri);
 	}
 
 }

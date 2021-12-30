@@ -36,4 +36,12 @@
    			SELECT LAST_INSERT_ID()
    		</selectKey>
    </insert>
+   
+   <select id ="getListWithPaging" resultType ="org.conan.domain.BoardVO">
+   		
+   		<![CDATA[
+   		select * from tbl_board
+   		limit #{pageStart} ,#{amount}
+   		]]>
+   </select>
 </mapper>

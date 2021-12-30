@@ -2,7 +2,10 @@ package org.conan.test;
 
 import static org.junit.Assert.assertNotNull;
 
+import java.util.List;
+
 import org.conan.domain.BoardVO;
+import org.conan.domain.Criteria;
 import org.conan.service.BoardService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +30,8 @@ public class BoardServiceTest {
 	}
 	@Test
 	public void testGetList() {
-		service.getList().forEach(board->log.info(board));
+		//service.getList().forEach(board->log.info(board));
+		service.getList(new Criteria(2,5)).forEach(board->log.info(board));
 	}
 	
 	@Test
@@ -53,5 +57,11 @@ public class BoardServiceTest {
 		if(board == null) {return;}
 		board.setTitle("제목 수정 from service");
 		log.info("수정결과 :" +service.modify(board));
+	}
+	@Test
+	public void testPaging() {
+		Criteria cri = new Criteria(4,3);
+		List<BoardVO> list = service.getList(cri);
+		list.forEach(board ->log.info(board));
 	}
 }
