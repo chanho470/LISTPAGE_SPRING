@@ -43,6 +43,12 @@
 							<label>updateDate</label><input class="form-control" name="updateDate" value='<fmt:formatDate value="${board.updateDate}" pattern="yyyy/MM/dd"/>' readonly="readonly">
 						</div>
 						
+						<input type="hidden" name="pageNum" value="<c:out value="${cri.pageNum }"/>">
+						<input type="hidden" name="amount" value="<c:out value="${cri.amount }"/>">
+						
+						<input type="hidden" name="type" value='<c:out value="${cri.type}"/>'> 
+                     	<input type="hidden" name="keyword" value='<c:out value="${cri.keyword}"/>'>
+						
 						<button type="submit" data-oper="modify" class="btn btn-info" >Modify</button>
 						<button type="submit" data-oper="remove" class="btn btn-danger" >Remove</button>
 						<button type="submit" data-oper="list" class="btn btn-success" >List</button>
@@ -69,10 +75,21 @@
 			console.log(operation);
 			if(operation === 'remove'){
 				formObj.attr("action","/board/remove");
+				
 			}
 			else if(operation === 'list'){
 				formObj.attr("action","/board/list").attr("method","get");
-				formObj.empty();
+				var pagNumTag = $("input[name='pageNum']").clone(); //잠시 보관용 필요한 데이터만 선택해서 가져왔음
+				var amountTag = $("input[name='amount']").clone();
+				var typeTag = $("input[name='type']").clone(); //잠시 보관용
+				var keywordTag = $("input[name='keyword']").clone();
+				formObj.empty();//제거
+				
+				formObj.append(pageNumTag); //필요한 테그들만 추가 
+				formObj.append(amountTag);
+				formObj.append(typeTag); //필요한 테그들만 추가 
+				formObj.append(keywordTag);
+				
 			}
 			formObj.submit();
 		});
