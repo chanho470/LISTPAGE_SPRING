@@ -69,14 +69,16 @@
 	$(document).ready(function(){
 		var operForm = $("#operForm");
 		$('button[data-oper="modify"]').on("click",function(e){
-			operForm.attr("action","/board/modify").submit();
+			operForm.attr("action","/board/modify").submit();//컨트롤러에서 작업 수행한다
 		});
 		$('button[data-oper="list"]').on("click",function(e){
-			operForm.find("#bno").remove();
-			operForm.attr("action","/board/list");
+			operForm.find("#bno").remove(); //이전 조회 기록 삭제 
+			operForm.attr("action","/board/list");// 페이지 이동 경로를 다시 설정해주는 작업이다
 			operForm.submit();
 		});
 		console.log(replyService);
+		
+		//댓글 관리 영역
 		var bnoValue='<c:out value="${board.bno}"/>';
 		replyService.add(
 				{reply:"JS TEST",replyer:"js tester",bno:bnoValue},//댓글 데이터

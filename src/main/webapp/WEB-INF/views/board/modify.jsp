@@ -79,7 +79,7 @@
 			}
 			else if(operation === 'list'){
 				formObj.attr("action","/board/list").attr("method","get");
-				var pagNumTag = $("input[name='pageNum']").clone(); //잠시 보관용 필요한 데이터만 선택해서 가져왔음
+				var pagNumTag = $("input[name='pageNum']").clone(); //잠시 보관용 필요한 데이터만 선택해서 가져왔음 데이터가 많기 때문이다 
 				var amountTag = $("input[name='amount']").clone();
 				var typeTag = $("input[name='type']").clone(); //잠시 보관용
 				var keywordTag = $("input[name='keyword']").clone();
