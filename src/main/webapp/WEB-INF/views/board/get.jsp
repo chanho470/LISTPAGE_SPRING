@@ -77,6 +77,40 @@
 			operForm.submit();
 		});
 		console.log(replyService);
+		var bnoValue='<c:out value="${board.bno}"/>';
+		replyService.add(
+				{reply:"JS TEST",replyer:"js tester",bno:bnoValue},//댓글 데이터
+				function(result){
+					alert("RESILT :" + result);
+				});
+		replyService.getList(
+				{bno:bnoValue,page:1}
+				,function(list){
+					for(var i=0,len=list.length||0 ; i<len ;i++){
+						console.log(list[i]);
+					}
+				});
+		/* replyService.remove(
+				7,//rno
+				function(count){
+					console.log(count);
+					if(count ==="success"){alert("REMOVED");}
+				},function(err){
+					alert("error occurred");
+				
+				}); //제거 영역*/ 
+				
+		replyService.update({
+			rno:5,
+			bno:bnoValue,
+			reply:"modefied reply..."
+			},function(result){
+				alert("수정완료");
+			
+		});	
+		replyService.get(4,function(data){
+			console.log(data);
+		});
 	});
 </script>
 
