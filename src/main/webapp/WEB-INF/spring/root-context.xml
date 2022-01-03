@@ -33,5 +33,7 @@
 		base-package="org.conan.service" />
 	<mybatis-spring:scan
 		base-package="org.conan.persistence" />
+		<mybatis-spring:scan
+		base-package="org.conan.mapper" />
 
 </beans>

@@ -1,10 +1,13 @@
 package org.conan.test;
 
 import java.util.List;
+import java.util.stream.IntStream;
 
 import org.conan.domain.BoardVO;
 import org.conan.domain.Criteria;
+import org.conan.domain.ReplyVO;
 import org.conan.persistence.BoardMapper;
+import org.conan.mapper.ReplyMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,7 @@ import lombok.extern.log4j.Log4j;
 public class BoardMapperTest {
 	@Setter(onMethod = @__({@Autowired}))
 	private BoardMapper mapper;
+	
 	@Test
 	public void testGetList() {
 		mapper.getList().forEach(board -> log.info(board));
@@ -78,4 +82,10 @@ public class BoardMapperTest {
 		List<BoardVO> list = mapper.getListWithPaging(cri);
 		list.forEach(board ->log.info(board));
 	}
+	@Test
+	public void testMapper() {
+		log.info("나왔니? ......."+mapper);
+	}
+	
+	
 }
