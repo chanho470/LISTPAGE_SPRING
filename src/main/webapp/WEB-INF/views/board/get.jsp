@@ -5,6 +5,8 @@
 <html lang="en">
 <%@include file="../includes/header.jsp"%>
 <script src="http://code.jquery.com/jquery-latest.js"></script> <!-- 푸터에 있음 -->
+
+<script src="/resources/js/reply.js"></script>
 <div id="page-wrapper">
 	<div class="row">
 		<div class="col-lg-12">
@@ -74,6 +76,7 @@
 			operForm.attr("action","/board/list");
 			operForm.submit();
 		});
+		console.log(replyService);
 	});
 </script>
 
