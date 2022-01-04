@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 import org.conan.domain.Criteria;
+import org.conan.domain.ReplyPageDTO;
 import org.conan.domain.ReplyVO;
 
 public interface ReplyService {
@@ -16,7 +17,7 @@ public interface ReplyService {
 	
 	public int remove(Long rno);
 	
-	public List<ReplyVO> getList(
+	public ReplyPageDTO getListPage(
 			@Param("cri") Criteria cri,
 			@Param("bno") Long bno
 			); //

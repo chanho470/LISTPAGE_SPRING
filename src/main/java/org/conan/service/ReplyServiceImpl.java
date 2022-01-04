@@ -3,6 +3,7 @@ package org.conan.service;
 import java.util.List;
 
 import org.conan.domain.Criteria;
+import org.conan.domain.ReplyPageDTO;
 import org.conan.domain.ReplyVO;
 import org.conan.mapper.ReplyMapper;
 import org.springframework.stereotype.Service;
@@ -41,9 +42,10 @@ public class ReplyServiceImpl implements ReplyService{
 		return mapper.delete(rno);
 	}
 	@Override
-	public List<ReplyVO> getList(Criteria cri, Long bno) {
+	public ReplyPageDTO getListPage(Criteria cri, Long bno) {
 		log.info("get reply list of a board........"+bno);
-		return mapper.getListWithPaging(cri, bno);
+		log.info(bno+"의 댓글 수 :" +mapper.getCountByBno(bno));
+		return new ReplyPageDTO (mapper.getCountByBno(bno) ,mapper.getListWithPaging(cri, bno));
 	}
 	
 	

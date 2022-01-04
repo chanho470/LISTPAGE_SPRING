@@ -19,4 +19,6 @@ public interface ReplyMapper {
 			@Param("cri") Criteria cri,
 			@Param("bno") Long bno
 			); //2개의 인자를 보낼떄 사용한다.
+	
+	public int getCountByBno(Long bno);
 }

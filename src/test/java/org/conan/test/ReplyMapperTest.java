@@ -61,5 +61,11 @@ public class ReplyMapperTest {
 				mapper.getListWithPaging(cri, bnoArr[1]);
 		replies.forEach(reply -> log.info(reply));
 	}
-	
+	@Test
+	public void testList2() {
+		Criteria cri = new Criteria(2,5); //5개 씩 페이지 구성하는데 2번째 페이지 
+		List<ReplyVO> replies =
+				mapper.getListWithPaging(cri, 1L); // bno가 1
+		replies.forEach(reply -> log.info(reply));
+	}
 }
