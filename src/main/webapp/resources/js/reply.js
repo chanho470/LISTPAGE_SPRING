@@ -74,7 +74,7 @@ var replyService = (function() {
 				if (error) { error(er); }
 			}
 		});
-	}//수정
+	}//수정 어려움 ...
 	
 	function get(rno,callback,error){
 		$.get("/replies/"+rno+".json",function(result){

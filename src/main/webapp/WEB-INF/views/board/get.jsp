@@ -178,14 +178,14 @@
 		}); */
 		
 		
-		var replyUL = $(".chat");
-		showList(1);
-		function showList(page){
+		var replyUL = $(".chat"); //댓글 단위 1개 
+		showList(1); // 디폴트로 첫 페이지를 보ㅇ줌 
+		function showList(page){ // 해당 댓글 페이지를 보여주는 함수 
 			//debugger;
 			console.log("page : "+page);
 			
 			replyService.getList(
-					{bno:bnoValue,page:page||1}
+					{bno:bnoValue,page:page||1} // 페이지 인자가 없을때 무조건 1이 나오도록 함  
 					,function(replyCnt,list){
 						console.log("replyCnt:" + replyCnt);
 						console.log("list:"+list);
@@ -196,20 +196,20 @@
 							console.log("나오나"+pageNum);
 							showList(pageNum);
 							return ;
-						}
+						}//등록시 무조건 마지막 페이지를 보여주는 함수 
 						
 						var str ="";
 						if(list == null || list.length == 0){
 							replyUL.html("");
-							return ;
+							return ; // 댓글 없을때 디폴드 
 						}
 						for( var i=0, len= list.length ||0 ; i<len ;i++){
 							str += "<li class ='left clearfix' data-rno='"+list[i].rno+" '>";
 							str += "<div><div class='header'><strong class='primary-font'>"+list[i].replyer+"</strong>";
 							str += "<small class='pull-right text-muted'>"+replyService.displayTime(list[i].replyDate)+"</small><div>";
 							str += "<p>"+ list[i].reply+"</p><div></li>";
-						}
-						replyUL.html(str);
+						} // 댓글이 있을때 추가 함 
+						replyUL.html(str); // 이안에 집어넘 필수 
 						showReplyPage(replyCnt);
 					});
 		}
@@ -223,9 +223,11 @@
 		var modalRemoveBtn = $("#modalRemoveBtn");
 		var modalRegisterBtn = $("#modalRegisterBtn");
 		var modalCloseBtn = $("#modalCloseBtn");
+		// 버튼 변수 설정 코드 
+		
 		
 		$("#addReplyBtn").on("click",function(e){
-			modal.find("input").val("");
+			modal.find("input").val(""); //인풋 밸류를 초기화
 			modalInputReplyDate.closest("div").hide();
 			modal.find("button[id != 'modalCloseBtn']").hide();
 			modalRegisterBtn.show();
@@ -234,22 +236,21 @@
 		
 		
 		
-		$(".chat").on("click","li",function(e){
+		$(".chat").on("click","li",function(e){ //댓글 눌렀을때 한하나
 			modalInputReplyDate.closest("div").show();
-			var rno = $(this).data("rno");
+			var rno = $(this).data("rno"); //댓글 번호 가져움
 			console.log(rno);
 			replyService.get(rno,function(reply){
-				modalInputReply.val(reply.reply);
-				modalInputReplyer.val(reply.replyer);
-				modalInputReplyDate.val(replyService.displayTime(reply.replyDate))
-				.attr("readonly","readonly");
-				modal.data("rno",reply.rno);
-				
+				modalInputReply.val(reply.reply); // 해당 댓글의 내용
+				modalInputReplyer.val(reply.replyer); //해당 댓글의 작성자
+				modalInputReplyDate.val(replyService.displayTime(reply.replyDate)).attr("readonly","readonly");
+				modal.data("rno",reply.rno); // 브트스트랩 용어 
+			
 				modal.find("button[id != 'modalCloseBtn']").hide();
 				modalModBtn.show();
 				modalRemoveBtn.show();
 				$(".modal").modal("show");
-			});
+			});// 해당 모달을 보여줌
 		});
 		
 		modalRegisterBtn.on("click",function(e){
@@ -295,14 +296,14 @@
 		
 		var pageNum = 1;
 		var replyPageFooter = $(".panel-footer");
-		function showReplyPage(replyCnt){
+		function showReplyPage(replyCnt){ // 댓글 페이징 처리 
 			console.log("showReplyPage : "+ replyCnt);
 			var endNum = Math.ceil(pageNum/10.0)*10;
 			var startNum = endNum -9;
 			var prev = startNum !=1;
 			var next = false;
-			if(endNum * 10 >= replyCnt){endNum = Math.ceil(replyCnt/10.0);}
-			if(endNum* 10< replyCnt){next = true;}
+			if(endNum * 10 >= replyCnt){endNum = Math.ceil(replyCnt/10.0);} //  댓글이 46개이면 5페이지 생성 
+			if(endNum* 10< replyCnt){next = true;} // 댓글이 52개이면 6페이지 되도록 함 
 			var str ="<ul class='pagination pull-right'>";
 			if(prev){
 				str += "<li class='page-item'><a class='page-link' href='"+(startNum-1)+"'>Previous</a></li> ";
@@ -318,7 +319,7 @@
 			console.log(str);
 			replyPageFooter.html(str);
 		}
-		
+		//
 		replyPageFooter.on("click","li a",function(e){
 			e.preventDefault();
 			console.log("page click");
@@ -326,7 +327,7 @@
 			console.log("targetPgaeNum" +targetPageNum);
 			pageNum = targetPageNum;
 			showList(pageNum);
-		});
+		}); // 댓글 페이지 이동을 담당하는 코드 
 	});
 </script>
 

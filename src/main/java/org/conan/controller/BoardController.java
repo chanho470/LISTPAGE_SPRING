@@ -38,7 +38,6 @@ public class BoardController {
 		service.register(board);
 		rttr.addFlashAttribute("result",board.getBno());
 		return "redirect:/board/list"; //하지 않는경우 새로 고침시 도배 
-		
 	}
 	@GetMapping("/register")
 	public void register() {

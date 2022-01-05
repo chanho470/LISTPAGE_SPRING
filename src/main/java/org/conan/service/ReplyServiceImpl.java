@@ -38,6 +38,7 @@ public class ReplyServiceImpl implements ReplyService{
 		log.info("modify........"+vo);
 		return mapper.update(vo);
 	}
+	
 	@Transactional
 	@Override
 	public int remove(Long rno) {
@@ -46,7 +47,9 @@ public class ReplyServiceImpl implements ReplyService{
 		ReplyVO vo = mapper.read(rno);
 		boardMapper.updateReplyCnt(vo.getBno(),-1);
 		return mapper.delete(rno);
-	}
+	}// 댓글이 삭제가 된 동시에 sql 작업이 이루어지기때문에 @Transactional 이용하여 병행 수행한다 둘다 안되거나 둘다 되거나 
+	// 다른작업의 삭제나 업데이트가 동시에 이루어질때  
+	
 	@Override
 	public ReplyPageDTO getListPage(Criteria cri, Long bno) {
 		log.info("get reply list of a board........"+bno);
