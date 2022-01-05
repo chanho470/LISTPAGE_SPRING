@@ -45,7 +45,7 @@
 								<!--  반복문 사용 -->
 								<tr class="odd gradeX">
 									<td>${list.bno}</td>
-									<td><a class="move" href='<c:out value="${list.bno}"/>'>${list.title}</a></td>
+									<td><a class="move" href='<c:out value="${list.bno}"/>'>${list.title} [${list.replycnt}]</a></td>
 									<td>${list.writer}</td>
 									<td class="center"><fmt:formatDate value="${list.regDate}"
 											pattern="yyyy/MM/dd" /></td>
