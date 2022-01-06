@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -134,14 +135,19 @@ public class UploadController {
 	
 	@GetMapping("/display")
 	@ResponseBody
-	public ResponseEntity<byte[]>getFile(String fileName){
+	public ResponseEntity<byte[]>getFile(String fileName){ //파일이 바이트 단위로 오니깐 바이트로 받아 배열에 저장한다 
 		log.info("file name ..........." +fileName);
 		File file = new File("c:/upload/"+fileName);
 		log.info("file : "+ file);
-		ResponseEntity<byte[]> result = null;
+		ResponseEntity<byte[]> result = null; // 파일을 담을 변수
 		try {
-			HttpHeaders header = new HttpHeaders();
-			header.add("Content-Type", Files.probeContentType(file.toPath()));
+			HttpHeaders header = new HttpHeaders(); // 종합 정보를 보냄 (Map 형식)
+			header.add("Content-Type", Files.probeContentType(file.toPath())); // 키 : Content-Type  value : Files.probeContentType(file.toPath())
+			// Files.probeContentType(file.toPath()) : 타입을 찾아줌
+			log.info("file0000000000000000 : "+ file);
+			log.info("file1111111111111111 : "+ file.toPath());
+			log.info("file2222222222222222: "+ Files.probeContentType(file.toPath()));
+			
 			result = new ResponseEntity<>(FileCopyUtils.copyToByteArray(file),header,HttpStatus.OK);
 		}
 		catch(IOException e) {
@@ -150,17 +156,17 @@ public class UploadController {
 		return result;
 	}
 	
-	@GetMapping(value ="/download", produces =MediaType.APPLICATION_OCTET_STREAM_VALUE)
-	@ResponseBody
-	public ResponseEntity<Resource> downloadFile(String fileName){
+	@GetMapping(value ="/download", produces =MediaType.APPLICATION_OCTET_STREAM_VALUE) // 파일업로드를 위함  APPLICATION_OCTET_STREAM_VALUE:첨부 파일 다운로드  MediaType : 파일 포멧...
+	@ResponseBody  
+	public ResponseEntity<Resource> downloadFile(String fileName){ //파일 이름만으로 다운로드 요청을 받음 
 		
 		log.info("다운로드 파일 ,,,,,,,"+fileName);
-		Resource resource = new FileSystemResource("c:/upload/"+fileName);
+		Resource resource = new FileSystemResource("c:/upload/"+fileName); // 업로드 되는 경로를 설정해줌 
 		log.info("리소스............"+resource);
 		
-		String resourceName = resource.getFilename();
+		String resourceName = resource.getFilename(); // 파일이름 따오기 
+		log.info("이건 뭐임?  ========== "+resourceName);
 		HttpHeaders headers = new HttpHeaders();
-		
 		if(resource.exists()== false) {
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
@@ -171,11 +177,33 @@ public class UploadController {
 		try {
 			headers.add("Content-Disposition", "attachment; fileName="
 					+ new String(resourceOriginalName.getBytes("utf-8"),"ISO-8859-1"));
+			log.info("이건 뭐임2?  ========== "+headers);
 		}
 		catch(UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
 		
 		return new ResponseEntity<Resource>(resource,headers,HttpStatus.OK);
+	}
+	
+	@PostMapping("/deleteFile")
+	@ResponseBody
+	public ResponseEntity<String> deleteFile(String fileName ,String type){ // 파일이름과 파일 이름을 받아온다
+		log.info("deletefile : " +fileName);
+		File file;
+		try {
+			file = new File("c:/upload/"+URLDecoder.decode(fileName,"UTF-8"));//온전한 파일이름을 받아옴
+			file.delete(); // 파일은 바로 삭제 원본파일 삭제 
+			if(type.equals("image")) { // 파일 타입이 이미지 일걍우 // 섬네일 파일 삭제
+				String largeFileName = file .getAbsolutePath().replace("S_", ""); //섬네일 이미지앞에 붙은 s를 제거해서 
+				log.info("largeFileName"+largeFileName);
+				file = new File(largeFileName); // 모두삭제
+				file.delete(); // 실제로 삭제함
+			}
+		}catch(UnsupportedEncodingException e) {
+			e.printStackTrace();
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);// 파일없으면 404 에러 
+		}
+		return new ResponseEntity<String>("deleted",HttpStatus.OK); // 있으면 alert 창에 deleted 보낸다 
 	}
 }
