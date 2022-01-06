@@ -166,7 +166,7 @@ public class UploadController {
 		}
 		
 		String resourceOriginalName = resourceName.substring(resourceName.indexOf("_")+1);
-		log.info("진짜이름 유아이디없는"+resourceOriginalName);
+		log.info("진짜이름 유아이디없는............"+resourceOriginalName);
 		
 		try {
 			headers.add("Content-Disposition", "attachment; fileName="
