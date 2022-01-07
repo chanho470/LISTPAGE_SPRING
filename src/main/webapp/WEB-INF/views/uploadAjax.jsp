@@ -111,18 +111,30 @@
 					
 					if(!obj.image){//이미지 아님 클릭하면 다운로드 경로로 이동하여 다운함.
 						 var fileCallPath = encodeURIComponent(obj.uploadPath+"/"+obj.uuid+"_"+obj.fileName); //full경로+ uuid + 파일이름 
-						str += "<li><div><a href='/download?fileName="+fileCallPath+"'><img src='/resources/images/attach.png'>"+ obj.fileName+"</a>" //다운로드 링크를 만들어줌
-								+"<span data-file=\' "+fileCallPath+"\' data-type='file'>X</span></div></li>"; //x 는 삭제하기 위함
+						 
+						 str += "<li><div>";
+						 str += "<span>"+fileName+"<span>";
+						 str += "<button type='button' data-file=\'"+fileCallPath+"\' data-type='file' class = 'btn btn-warning btn-cricle'><i class='fa fa-times'></i></button><br>";
+						 str += "<img src='/resources/images/attach.png'></a>";
+						 str += "</div></li>";
+			/* 			str += "<li><div><a href='/download?fileName="+fileCallPath+"'><img src='/resources/images/attach.png'>"+ obj.fileName+"</a>" //다운로드 링크를 만들어줌
+								+"<span data-file=\' "+fileCallPath+"\' data-type='file'>X</span></div></li>"; //x 는 삭제하기 위함 */
 					}else{//이미지			
 						//str += "<li>" +obj.fileName+"</li>";
 						var fileCallPath = 
 							encodeURIComponent(obj.uploadPath+"/S_"+obj.uuid+"_"+obj.fileName); //섬네일 이미지를 불러옴 
-						
-						var originPath = obj.uploadPath +"/"+obj.uuid + "_" +obj.fileName; //그냥 이미지의 경로를 불러옴
+							str += "<li><div>";
+							 str += "<span>"+fileName+"<span>";
+							 str += "<button type='button'  data-file=\'"+fileCallPath+"\' data-type='image' class = 'btn btn-warning btn-cricle'><i class='fa fa-times'></i></button><br>";
+							 str += "<img src='display?fileName="+fileCallPath+"'></a>";
+							 str += "</div></li>";
+								
+							
+					/* 	var originPath = obj.uploadPath +"/"+obj.uuid + "_" +obj.fileName; //그냥 이미지의 경로를 불러옴
 						originPath = originPath.replace(new RegExp(/\\/g),"/"); //경로 안의 걍로 설정 문자를 / 퉁침
 						
 						str += "<li><a href=\"javascript:showImage(\'"+originPath+"\')\"><img src='display?fileName="+fileCallPath+"'></a>"
-								+"<span data-file=\'"+fileCallPath+"\' data-type='image'>X</span></li>";
+								+"<span data-file=\'"+fileCallPath+"\' data-type='image'>X</span></li>" */;
 					}
 				});
 				uploadResult.append(str); //str 값을 실제로 넣어줌 (덮어쓰기 ) 
@@ -160,8 +172,9 @@
 			 $(".uploadResult").on("click","span",function(e){
 					var targetFile = $(this).data("file"); // 삭제할 파일의 경로
 					var type = $(this).data("type"); // 삭제할 파일의 형식
-					console.log("aaaaaaaaaaaaaaaaa"+targetFile);
-					console.log("ㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠㅠ"+type);
+					
+					alert("delete file");
+					
 					$.ajax({
 						url:'/deleteFile',
 						data:{fileName:targetFile,type:type},

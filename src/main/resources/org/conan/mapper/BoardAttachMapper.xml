@@ -5,16 +5,24 @@
 <mapper namespace="org.conan.mapper.BoardAttachMapper"> 
 
 	<insert id ="insert">
-   		insert into tbl_attach(uuid , uploadPath , fileName ,fileType , bno)
-   		value(#{uuid} , #{uploadPath} , #{fileName} ,#{fileType} , #{bno})
+   		insert into tbl_attach (uuid , uploadPath , fileName ,fileType , bno)
+   		values (#{uuid} , #{uploadPath} , #{fileName} ,#{fileType} , #{bno})
    </insert>
    
 	<delete id="delete">
    		delete from tbl_attach where uuid = #{uuid}
    </delete>
    
-   <select id ="read" resultType="org.conan.domain.BoardAttachVO">
+   <select id ="findByBno" resultType="org.conan.domain.BoardAttachVO">
    		select * from tbl_attach where bno = #{bno}
    </select>
 
+	<delete id="deleteAll">
+   		delete from tbl_attach where bno = #{bno}
+   </delete>
+   
+   <select id="getOldFiles" resultType="org.conan.domain.BoardAttachVO">
+   		select * from tbl_attach
+   		where uploadpath = date_format(date_sub(now(),interval 1 day),'%Y\%m\%d')
+   </select>
 </mapper>

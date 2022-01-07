@@ -104,10 +104,10 @@
 				</div>
 				
 			</div>
+			</div>
 		</div>
-	</div>
 	<!-- /.col-lg-6 -->
-</div>
+	</div>
 <!-- /.row -->
 
 <!-- /#page-wrapper -->
@@ -116,7 +116,19 @@
 	$("button[type='submit']").on("click",function(e){
 		e.preventDefault();
 		console.log("submit clicked");
-	})
+		var str = "";
+		$(".uploadResult ul li").each(function(i , obj){
+			var jobj = $(obj);
+			console.dir(obj);
+			str += "<input type='hidden' name='attachList["+i+"].fileName' value='"+jobj.data("filename")+"'>";
+			str += "<input type='hidden' name='attachList["+i+"].uuid' value='"+jobj.data("uuid")+"'>";
+			str += "<input type='hidden' name='attachList["+i+"].uploadPath' value='"+jobj.data("path")+"'>";
+			str += "<input type='hidden' name='attachList["+i+"].fileType' value='"+jobj.data("type")+"'>";
+			
+		});
+		formObj.append(str);
+		formObj.submit();
+	});
 	
 	function showImage(fileCallPath){
 		$(".bigPictureWrapper").css("display","flex").show();
@@ -134,7 +146,6 @@
 	$(document).ready(function(){
 		
 		var cloneObj = $(".uploadDiv").clone(); // 
-		
 		var regex = new RegExp("(.*?)\.(exe|sh|zip|alz)$");
 		var maxSize = 5242880;
 		function checkExtension(fileName , fileSize){
@@ -149,7 +160,7 @@
 			return true;
 		}
 		
-		$("input[type='file']").change(function(e){
+		$(document).on('change', "input[type='file']", function(e) {
 			var formData = new FormData(); //가상의 폼데이터를 만든다 
 			var inputFile = $("input[name = 'uploadFile']"); // 입력을 받은거 
 			var files = inputFile[0].files; // 인풋이 하나이기때문이다 ex input 이 2개 이상인경우  inputFile[1 ++ ] 늘어난다. 
@@ -165,17 +176,30 @@
 					
 					if(!obj.image){//이미지 아님 클릭하면 다운로드 경로로 이동하여 다운함.
 						 var fileCallPath = encodeURIComponent(obj.uploadPath+"/"+obj.uuid+"_"+obj.fileName);
-						str += "<li><div><a href='/download?fileName="+fileCallPath+"'><img src='/resources/images/attach.png'>"+ obj.fileName+"</a>"
-								+"<span data-file=\' "+fileCallPath+"\' data-type='file'>X</span></div></li>";
+						
+						 str += "<li data-path='"+obj.uploadPath+"' data-uuid='"+obj.uuid+"' data-filename = '"+obj.fileName+"' data-type ='"+obj.image+"'><div>";
+						 str += "<span>"+obj.fileName+"<span>";
+						 str += "<button type='button' data-file=\'"+fileCallPath+"\' data-type='file' class ='btn btn-warning btn-circle'><i class='fa fa-times'></i></button><br>";
+						 str += "<img src='/resources/images/attach.png'></a>";
+						 str += "</div></li>";
+					
+						/* str += "<li><div><a href='/download?fileName="+fileCallPath+"'><img src='/resources/images/attach.png'>"+ obj.fileName+"</a>"
+								+"<span data-file=\' "+fileCallPath+"\' data-type='file'>X</span></div></li>"; */
 					}else{//이미지			
 						//str += "<li>" +obj.fileName+"</li>";
 						var fileCallPath = 
 							encodeURIComponent(obj.uploadPath+"/S_"+obj.uuid+"_"+obj.fileName);
 						
-						var originPath = obj.uploadPath +"/"+obj.uuid + "_" +obj.fileName;
+						str += "<li data-path='"+obj.uploadPath+"' data-uuid='"+obj.uuid+"' data-filename = '"+obj.fileName+"' data-type ='"+obj.image+"'><div>";
+						str += "<span>"+obj.fileName+"<span>";
+						str += "<button type='button'  data-file=\'"+fileCallPath+"\' data-type='image' class = 'btn btn-warning btn-circle'><i class='fa fa-times'></i></button><br>";
+						str += "<img src='/display?fileName="+fileCallPath+"'>";
+						str += "</div></li>";
+						
+						/* var originPath = obj.uploadPath +"/"+obj.uuid + "_" +obj.fileName;
 						originPath = originPath.replace(new RegExp(/\\/g),"/");
 						str += "<li><a href=\"javascript:showImage(\'"+originPath+"\')\"><img src='/display?fileName="+fileCallPath+"'></a>"
-								+"<span data-file=\'"+fileCallPath+"\' data-type='image'>X</span></li>";
+								+"<span data-file=\'"+fileCallPath+"\' data-type='image'>X</span></li>"; */
 					}
 				});
 				uploadUL.append(str);
@@ -184,6 +208,7 @@
 			
 			
 			console.log(files);
+			
 			for(var i=0; i < files.length;i++){
 				
 				if(!checkExtension(files[i].name,files[i].size)){
@@ -191,6 +216,7 @@
 				}
 				formData.append("uploadFile",files[i]); //가상의 폼에다가 저장한다.
 			}
+			
 			console.log("files.length : "+files.length);
 			// ajax 로 넘기기 워한 사전작업
 			 $.ajax({
@@ -211,16 +237,21 @@
 			 //폼이 없이 가상의 폼으로 만들어서 전달하는ㄴ 방식으로 에이젝스를 이용함
 			 
 			 
-			 $(".uploadResult").on("click","span",function(e){
+			 $(".uploadResult").on("click","button",function(e){
 					var targetFile = $(this).data("file");
 					var type = $(this).data("type");
+					var targetLi = $(this).closest("li");
+					alert("delete file");
 					console.log("aaaaaaaaaaaaaaaaa"+targetFile);
 					$.ajax({
 						url:'/deleteFile',
 						data:{fileName:targetFile,type:type},
 						dataType : 'text',
 						type:'post',
-						success:function(result){alert(result);}
+						success:function(result){
+							alert(result);
+							targetLi.remove();
+						}
 					});
 				});
 				

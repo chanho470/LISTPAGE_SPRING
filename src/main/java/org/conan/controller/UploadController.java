@@ -67,13 +67,12 @@ public class UploadController {
 		File uploadPath = new File(uploadFolder , getFolder()); //.파일을 업로드하는데 기본으로는 업로드 경로에 넣어주는데 생성한 경로도 추가 함
 		log.info("uploadPath"+uploadPath);
 		
-		UUID uuid= UUID.randomUUID(); // 랜덤으로 만든거 
-		
 		if(uploadPath.exists() == false) { // 아직까지 생성된 폴더가 없으면 
 			uploadPath.mkdirs(); // 위에서 언급한 폴더 경로를 생성한다.
 		}
 		
 		for(MultipartFile multipartFile : uploadFile) {//각 하나씩 가져와 multipartFile에지정
+			UUID uuid= UUID.randomUUID(); // 랜덤으로 만든거 
 			log.info("---------------------------------");
 			log.info("업로드 파일이름"+multipartFile.getOriginalFilename());
 			log.info("업로드 파일사이즈"+multipartFile.getSize());
