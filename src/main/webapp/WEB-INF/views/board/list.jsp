@@ -3,7 +3,7 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <!DOCTYPE html>
-<script src="http://code.jquery.com/jquery-latest.js"></script>
+
 <!-- 푸터에 있음 -->
 <html lang="en">
 <%@include file="../includes/header.jsp"%>
@@ -154,7 +154,7 @@
 
 <script type="text/javascript">
    		$(document).ready(function(){
-   			var result = '<c:out value="${result}"/>';
+   			var result = '<c:out value="${result}"/>
    			//모달 보여주기
    			checkModal(result);
    			history.replaceState({},null,null) //오류 잡는거 

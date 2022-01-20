@@ -154,7 +154,6 @@ $("button[type='submit']").on("click",function(e){
 	formObj.submit();
 });
 
-
 	$(document).ready(function(){
 		var formObj = $("form");
 //========================================================================================================================================		
@@ -202,7 +201,6 @@ $("button[type='submit']").on("click",function(e){
 					type:'post',
 					success:function(result){
 					alert(result);
-					
 					}
 				});
 			});
